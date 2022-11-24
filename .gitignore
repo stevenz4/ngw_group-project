@@ -1,0 +1,4 @@
+node_modules/
+yarn.lock
+demo_query_endpoint.js
+demo-query-RDF-file.js

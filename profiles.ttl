@@ -1,0 +1,24 @@
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+
+<#SZ>
+    a foaf:Person ;
+    foaf:name "Steven Zheng" ;
+    foaf:interest "Comedy_film" ;
+		foaf:title "Bretzel Curry" ;
+.
+
+<#RB>
+    a foaf:Person ;
+    foaf:name "Ráhel Bálogh" ;
+    foaf:interest "Horror_film" ;
+		foaf:title "Shining Star" ;
+.
+
+<#MK>
+    a foaf:Person ;
+    foaf:name "Máté Kézy" ;
+    foaf:interest "Action_film" ;
+		foaf:title "Dominic Toretto" ;
+.
