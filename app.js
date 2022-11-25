@@ -1,22 +1,6 @@
 const express = require("express");
 const expressHandlebars = require("express-handlebars");
-/*
-// This is what our game objects looked like from the
-// beginning, but now we read the data from the turtle
-// file instead.
 
-const games = [{
-	id: "super_mario_bros",
-	name: "Super Mario Bros.",
-	description: "A good game."
-}, {
-	id: "the_legend_of_zelda",
-	name: "The Legend Of Zelda",
-	description: "A cool game."
-}]
-*/
-
-// Create the game objects from the info in the turtle file.
 // const fs = require('fs')
 // const $rdf = require('rdflib')
 
@@ -196,9 +180,6 @@ app.get("/profile/:id", function (request, response) {
 		moviesSuggestion: profile.suggestions,
 		genre: profile.interest
 	};
-
-	// console.log(model);
-
 	response.render("profile.hbs", model);
 });
 
@@ -207,7 +188,6 @@ app.get("/profiles", function (request, response) {
 	const model = {
 		profiles: profiles,
 	};
-	console.log(model);
 	response.render("profiles.hbs", model);
 });
 
