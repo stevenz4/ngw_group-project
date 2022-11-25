@@ -118,16 +118,16 @@ var usersURI = ["#SZ", "#RB", "#MK"];
 
 try {
 	$rdf.parse(data, store, baseURI, contentType);
-	usersURI.map((item) => {
+	usersURI.map((item, index) => {
 		var user = store.any($rdf.sym(baseURI + item), FOAF("name"));
 		var interest = store.any($rdf.sym(baseURI + item), FOAF("interest"));
 		var userInterest = {
+			id: index,
 			name: user.value,
 			interest: interest.value,
 		};
 		profiles.push(userInterest);
 	});
-	console.log(profiles);
 } catch (err) {
 	console.log(err);
 }
@@ -136,26 +136,19 @@ try {
 
 // ------------------------------ Query ------------------------------
 
-const genres = [
-	"Horror_film",
-	"Action_film",
-	"Comedy_film",
-	"Romance_film",
-	"Thriller_film",
-	"Science_fiction_film",
-	"Fantasy_film",
-	"Crime_film",
-	"Adventure_film",
-];
-
 const ParsingClient = require("sparql-http-client/ParsingClient");
 
 const endpointUrl = "https://dbpedia.org/sparql";
-profiles.forEach((profile) => {
+
+for (const profile of profiles) {
 	const query = `
-		SELECT DISTINCT ?film
+		SELECT DISTINCT ?film ?name ?abstract ?releaseDate
 		WHERE {
 				?film dbo:wikiPageWikiLink dbr:${profile.interest} .
+				?film foaf:name ?name .
+				?film dbo:abstract ?abstract .
+				FILTER (langMatches(lang(?abstract),"en"))
+				?film dbo:releaseDate ?releaseDate .
 		} ORDER BY RAND() LIMIT 10
 	`;
 	const client = new ParsingClient({
@@ -163,19 +156,20 @@ profiles.forEach((profile) => {
 		headers: { Accept: "application/json" },
 	});
 
-	var test = [];
-
 	//SPARQL Query Results JSON format
 	//Please check this webpage https://www.w3.org/TR/sparql11-results-json/
 	client.query.select(query).then((bindings) => {
+		let suggestions = [];
 		bindings.forEach((row) => {
+			let suggestion = {};
 			Object.entries(row).forEach(([key, value]) => {
-				test.push({ [key]: value.value });
+				suggestion[key] = value.value;
 			});
+			suggestions.push(suggestion);
 		});
-		console.log(test);
+		profile.suggestions = suggestions;
 	});
-});
+}
 
 // ------------------------------ Query END ------------------------------
 
@@ -189,24 +183,31 @@ app.engine(
 );
 
 // GET /games/super_mario_bros
-app.get("/games/:id", function (request, response) {
+app.get("/profile/:id", function (request, response) {
 	const id = request.params.id; // "super_mario_bros"
-
-	const game = games.find((g) => g.id == id);
+	const profile = profiles.find((profile) => {
+		if (profile.id.toString() == parseInt(id)) {
+			return profile
+		}
+		
+	});
 
 	const model = {
-		game: game,
+		moviesSuggestion: profile.suggestions,
 	};
 
-	response.render("game.hbs", model);
+	// console.log(model);
+
+	response.render("profile.hbs", model);
 });
 
 // GET /games
-app.get("/games", function (request, response) {
-	// const model = {
-	// 	games: games
-	// }
-	// response.render("games.hbs", model)
+app.get("/profiles", function (request, response) {
+	const model = {
+		profiles: profiles,
+	};
+	console.log(model);
+	response.render("profiles.hbs", model);
 });
 
 // GET /layout.css
