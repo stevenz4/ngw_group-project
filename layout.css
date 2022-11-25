@@ -18,9 +18,14 @@ nav a{
 }
 
 main{
-	max-width: 400px;
+	max-width: 80vw;
 	margin: 1em auto;
 	border-top: 1px dotted black;
+}
+
+.main-content{
+	text-align: center;
+	padding: 1em;
 }
 
 footer{
@@ -33,4 +38,29 @@ footer{
 
 footer a{
 	color: black;
+}
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}
+
+.profiles {
+	text-align: center;
+
+}
+
+.profiles > ul {
+	display: inline-block;
 }

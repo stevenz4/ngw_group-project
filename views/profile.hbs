@@ -1,6 +1,20 @@
 <h1>Movies suggestion</h1>
+<h2>Genre: {{genre}}</h2>
 <div>
-	{{#each moviesSuggestion}}
-		<div><p>Name: {{name}}</p><p>Link: {{film}}</p></div><br/><br/>
-	{{/each}}
+  <table>
+    <tr>
+      <th>Movie</th>
+      <th>Abstract</th>
+      <th>Release Date</th>
+      <th>Link</th>
+    </tr>
+    {{#each moviesSuggestion}}
+    <tr>
+      <td>{{name}}</td>
+      <td>{{abstract}}</td>
+      <td>{{releaseDate}}</td>
+      <td><a href="{{film}}">Link</a></td>
+    </tr>
+    {{/each}}
+  </table>
 </div>

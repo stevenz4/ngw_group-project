@@ -194,6 +194,7 @@ app.get("/profile/:id", function (request, response) {
 
 	const model = {
 		moviesSuggestion: profile.suggestions,
+		genre: profile.interest
 	};
 
 	// console.log(model);
