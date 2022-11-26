@@ -10,7 +10,15 @@
     </tr>
     {{#each moviesSuggestion}}
     <tr>
-      <td>{{name}}</td>
+      <td>{{filmLabel}}</td>
+      <td>{{abstract}}</td>
+      <td>{{releaseDate}}</td>
+      <td><a href="{{film}}">Link</a></td>
+    </tr>
+    {{/each}}
+    {{#each moviesSuggestionBis}}
+    <tr>
+      <td>{{filmLabel}}</td>
       <td>{{abstract}}</td>
       <td>{{releaseDate}}</td>
       <td><a href="{{film}}">Link</a></td>
