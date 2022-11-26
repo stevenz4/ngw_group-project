@@ -1,85 +1,6 @@
 const express = require("express");
 const expressHandlebars = require("express-handlebars");
 
-// const fs = require('fs')
-// const $rdf = require('rdflib')
-
-// const turtleString = fs.readFileSync('game-resources.ttl').toString()
-
-// const store = $rdf.graph()
-
-// $rdf.parse(
-// 	turtleString,
-// 	store,
-// 	"http://gameverse.com/owl/games",
-// 	"text/turtle"
-// )
-
-// const stringQuery = `
-// 	SELECT
-// 		?id
-// 		?name
-// 		?description
-// 	WHERE {
-// 		?game a <http://gameverse.com/owl/games#Game> .
-// 		?game <http://gameverse.com/owl/games#id> ?id .
-// 		?game <http://gameverse.com/owl/games#name> ?name .
-// 		?game <http://gameverse.com/owl/games#description> ?description .
-// 	}
-// `
-
-// const query = $rdf.SPARQLToQuery(stringQuery, false, store)
-
-// // To see what we get back as result:
-// // console.log(store.querySync(query))
-
-// const games = store.querySync(query).map(
-// 	gameResult => {
-// 		return {
-// 			id: gameResult['?id'].value,
-// 			name: gameResult['?name'].value,
-// 			description: gameResult['?description'].value
-// 		}
-// 	}
-// )
-
-// // Try to find more information about each game from
-// // linked data.
-// const ParsingClient = require('sparql-http-client/ParsingClient')
-
-// const client = new ParsingClient({
-// 	endpointUrl: 'https://dbpedia.org/sparql'
-// })
-
-// for(const game of games){
-
-// const query = `
-// 	SELECT
-// 		?releaseDate
-// 	WHERE {
-// 		?game dbp:title "${game.name}"@en .
-// 		?game dbo:releaseDate ?releaseDate .
-// 	}
-// `
-
-// 	client.query.select(query).then(rows => {
-
-// 		// Too see what we get back as result:
-// 		// console.log(rows)
-
-// 		game.releaseDate = 'Unknown' // Default value in case we don't find any.
-// 		rows.forEach(row => {
-// 			game.releaseDate = row.releaseDate.value
-// 		})
-
-// 	}).catch(error => {
-// 		console.log(error)
-// 	})
-
-// }
-
-// Our Express app.
-
 // ------------------------------ Retrieve Profiles ------------------------------
 const $rdf = require("rdflib");
 const fs = require("fs");
@@ -140,8 +61,6 @@ for (const profile of profiles) {
 		headers: { Accept: "application/json" },
 	});
 
-	//SPARQL Query Results JSON format
-	//Please check this webpage https://www.w3.org/TR/sparql11-results-json/
 	client.query.select(query).then((bindings) => {
 		let suggestions = [];
 		bindings.forEach((row) => {
@@ -168,7 +87,7 @@ for (const profile of profiles) {
 
 	SELECT distinct ?filmLabel ?releaseDate ?abstract
 	WHERE { 
-		?film wdt:P136/rdfs:label "comedy film"@en .
+		?film wdt:P136/rdfs:label "${profile.interest.toLowerCase().replace("_", " ")}"@en .
 		?film schema:description ?abstract .
 		FILTER (langMatches(lang(?abstract),"en"))
 		?film wdt:P577 ?releaseDate
@@ -187,12 +106,14 @@ for (const profile of profiles) {
 				suggestions.push(suggestion);
 			})
 			.on("end", () => {
-				profile.suggestions = { ...profile.suggestions, ...suggestions };
+				profile.suggestionsBis = { ...profile.suggestionsBis, ...suggestions };
 			});
 	});
 }
 
 // ------------------------------ Query END ------------------------------
+
+// Our Express app.
 
 const app = express();
 
@@ -203,9 +124,10 @@ app.engine(
 	})
 );
 
-// GET /games/super_mario_bros
+// GET /profile/:id
+
 app.get("/profile/:id", function (request, response) {
-	const id = request.params.id; // "super_mario_bros"
+	const id = request.params.id;
 	const profile = profiles.find((profile) => {
 		if (profile.id.toString() == parseInt(id)) {
 			return profile;
@@ -214,12 +136,13 @@ app.get("/profile/:id", function (request, response) {
 
 	const model = {
 		moviesSuggestion: profile.suggestions,
+		moviesSuggestionBis: profile.suggestionsBis,
 		genre: profile.interest,
 	};
 	response.render("profile.hbs", model);
 });
 
-// GET /games
+// GET /profiles
 app.get("/profiles", function (request, response) {
 	const model = {
 		profiles: profiles,
@@ -242,4 +165,4 @@ app.get("/about", function (request, response) {
 	response.render("about.hbs");
 });
 
-app.listen(8080);
+app.listen(8080); //Server PORT
