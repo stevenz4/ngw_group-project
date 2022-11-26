@@ -126,10 +126,10 @@ const endpointUrl = "https://dbpedia.org/sparql";
 
 for (const profile of profiles) {
 	const query = `
-		SELECT DISTINCT ?film ?name ?abstract ?releaseDate
+		SELECT DISTINCT ?film ?filmLabel ?abstract ?releaseDate
 		WHERE {
 				?film dbo:wikiPageWikiLink dbr:${profile.interest} .
-				?film foaf:name ?name .
+				?film foaf:name ?filmLabel .
 				?film dbo:abstract ?abstract .
 				FILTER (langMatches(lang(?abstract),"en"))
 				?film dbo:releaseDate ?releaseDate .
@@ -151,7 +151,44 @@ for (const profile of profiles) {
 			});
 			suggestions.push(suggestion);
 		});
-		profile.suggestions = suggestions;
+		profile.suggestions = { ...profile.suggestions, ...suggestions };
+	});
+}
+
+// ------------------------------ WIKIDATA ------------------------------
+
+const SparqlClient = require("sparql-http-client");
+const endpointUrlWIKIDATA = "https://query.wikidata.org/sparql";
+
+for (const profile of profiles) {
+	const query = `
+	PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+	PREFIX wdt:  <http://www.wikidata.org/prop/direct/>
+	PREFIX schema: <http://schema.org/>
+
+	SELECT distinct ?filmLabel ?releaseDate ?abstract
+	WHERE { 
+		?film wdt:P136/rdfs:label "comedy film"@en .
+		?film schema:description ?abstract .
+		FILTER (langMatches(lang(?abstract),"en"))
+		?film wdt:P577 ?releaseDate
+		SERVICE wikibase:label { bd:serviceParam wikibase:language  "en" }
+	} LIMIT 10
+	`;
+	const client = new SparqlClient({ endpointUrl: endpointUrlWIKIDATA });
+	client.query.select(query).then((stream) => {
+		let suggestions = [];
+		stream
+			.on("data", (row) => {
+				let suggestion = {};
+				Object.entries(row).forEach(([key, value]) => {
+					suggestion[key] = value.value;
+				});
+				suggestions.push(suggestion);
+			})
+			.on("end", () => {
+				profile.suggestions = { ...profile.suggestions, ...suggestions };
+			});
 	});
 }
 
@@ -171,14 +208,13 @@ app.get("/profile/:id", function (request, response) {
 	const id = request.params.id; // "super_mario_bros"
 	const profile = profiles.find((profile) => {
 		if (profile.id.toString() == parseInt(id)) {
-			return profile
+			return profile;
 		}
-		
 	});
 
 	const model = {
 		moviesSuggestion: profile.suggestions,
-		genre: profile.interest
+		genre: profile.interest,
 	};
 	response.render("profile.hbs", model);
 });
