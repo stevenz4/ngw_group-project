@@ -16,5 +16,8 @@
     "nodemon": "^2.0.20",
     "rdflib": "^2.2.21",
     "sparql-http-client": "^2.4.1"
+  },
+  "devDependencies": {
+    "tailwindcss": "^3.2.4"
   }
 }
