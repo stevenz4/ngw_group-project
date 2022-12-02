@@ -13,6 +13,7 @@
   "dependencies": {
     "express": "^4.18.2",
     "express-handlebars": "^6.0.6",
+    "moment": "^2.29.4",
     "nodemon": "^2.0.20",
     "rdflib": "^2.2.21",
     "sparql-http-client": "^2.4.1"

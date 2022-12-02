@@ -2,44 +2,33 @@
 @tailwind components;
 @tailwind utilities;
 
-header{
-	font-size: 2em;
-	text-align: center;
+.table {
+  display: table;
 }
 
-nav{
-	text-align: center;
+.text-xs {
+  font-size: 0.75rem;
+  line-height: 1rem;
 }
 
-nav a{
-	display: inline-block;
-	padding: 0.5em;
-	border-radius: 0.5em;
-	background-color: aqua;
-	margin: 0 0.5em;
-	color: black;
-	text-decoration: none;
+.text-xl {
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
-main{
-	max-width: 80vw;
-	margin: 1em auto;
+body {
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 1.5;
+  color: #212529;
+  text-align: left;
+  background-color: #fafafa;
 }
 
-.main-content{
-	text-align: center;
-	padding: 1em;
-}
-
-footer{
-	max-width: 400px;
-	margin: 1em auto;
-	padding-top: 0.5em;
-	text-align: center;
-}
-
-footer a{
-	color: black;
+footer {
+  bottom: 0;
+  background-color: rgb(239, 239, 239);
+  padding: 3em;
 }
 
 table {
@@ -48,7 +37,8 @@ table {
   width: 100%;
 }
 
-td, th {
+td,
+th {
   border: 1px solid #dddddd;
   text-align: left;
   padding: 8px;
@@ -58,10 +48,6 @@ tr:nth-child(even) {
   background-color: #dddddd;
 }
 
-.profiles {
-	text-align: center;
-}
-
 .profiles > ul {
-	display: inline-block;
+  display: inline-block;
 }

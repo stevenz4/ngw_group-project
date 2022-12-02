@@ -166,3 +166,15 @@ app.get("/about", function (request, response) {
 });
 
 app.listen(8080); //Server PORT
+
+const Handlebars = require("handlebars");
+
+Handlebars.registerHelper('replace', function( find, replace, options) {
+    var string = options.fn(this);
+    return string.replace( find, replace );
+});
+
+Handlebars.registerHelper('formatDate', function(datetime) {
+	// take the first 10 characters of the date
+	return datetime.substring(0, 10);
+});
