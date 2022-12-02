@@ -85,7 +85,7 @@ for (const profile of profiles) {
 	PREFIX wdt:  <http://www.wikidata.org/prop/direct/>
 	PREFIX schema: <http://schema.org/>
 
-	SELECT distinct ?filmLabel ?releaseDate ?abstract
+	SELECT distinct ?film ?filmLabel ?releaseDate ?abstract
 	WHERE { 
 		?film wdt:P136/rdfs:label "${profile.interest.toLowerCase().replace("_", " ")}"@en .
 		?film schema:description ?abstract .
@@ -106,6 +106,7 @@ for (const profile of profiles) {
 				suggestions.push(suggestion);
 			})
 			.on("end", () => {
+				console.log(suggestions);
 				profile.suggestionsBis = { ...profile.suggestionsBis, ...suggestions };
 			});
 	});
