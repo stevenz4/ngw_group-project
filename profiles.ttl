@@ -6,19 +6,16 @@
     a foaf:Person ;
     foaf:name "Steven Zheng" ;
     foaf:interest "Comedy_film" ;
-		foaf:nick "Bretzel Curry" ;
 .
 
 <#RB>
     a foaf:Person ;
     foaf:name "Ráhel Bálogh" ;
     foaf:interest "Horror_film" ;
-		foaf:nick "Shining Star" ;
 .
 
 <#MK>
     a foaf:Person ;
     foaf:name "Máté Kézy" ;
     foaf:interest "Action_film" ;
-		foaf:nick "Dominic Toretto" ;
 .
