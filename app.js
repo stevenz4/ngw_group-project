@@ -161,11 +161,6 @@ app.get("/", function (request, response) {
 	response.render("start.hbs");
 });
 
-// GET /about
-app.get("/about", function (request, response) {
-	response.render("about.hbs");
-});
-
 app.listen(8080); //Server PORT
 
 const Handlebars = require("handlebars");

@@ -1,3 +1,5 @@
+/* Tailwind configuration file */
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ["./views/**/*.{html,js,hbs}"],

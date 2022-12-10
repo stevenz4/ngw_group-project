@@ -1,5 +1,8 @@
 <h1 class="flex justify-center mt-8 mb-8 text-3xl">Movies suggestions</h1>
-<h2 class="flex justify-center mb-8 text-xl">Genre: {{#replace "_" " "}}{{genre}}{{/replace}}</h2>
+<h2 class="flex justify-center mb-8 text-xl">Genre:
+  {{#replace "_" " "}}{{genre}}{{/replace}}</h2>
+
+<!-- Retrieved movies into table -->
 <div>
   <table class="table-fixed w-10/12 mx-auto mb-10">
     <thead>
@@ -29,3 +32,4 @@
       {{/each}}
     </tbody>
   </table>
+</div>
