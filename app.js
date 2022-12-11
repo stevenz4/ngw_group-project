@@ -39,11 +39,15 @@ try {
 
 // ------------------------------ Retrieve Profiles END ------------------------------
 
-// ------------------------------ Query ------------------------------
+// ------------------------------ Queries ------------------------------
 
 const ParsingClient = require("sparql-http-client/ParsingClient");
 
 const endpointUrl = "https://dbpedia.org/sparql";
+
+
+// ------------------------------ DBPEDIA ------------------------------
+// Purposely using random to get different results each time
 
 for (const profile of profiles) {
 	const query = `
@@ -106,13 +110,12 @@ for (const profile of profiles) {
 				suggestions.push(suggestion);
 			})
 			.on("end", () => {
-				console.log(suggestions);
 				profile.suggestionsBis = { ...profile.suggestionsBis, ...suggestions };
 			});
 	});
 }
 
-// ------------------------------ Query END ------------------------------
+// ------------------------------ Queries END ------------------------------
 
 // Our Express app.
 
